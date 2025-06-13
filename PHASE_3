@@ -1,0 +1,56 @@
+Step 1: Create a Data folder in the Server project
+
+Create a new folder:
+/Server/Data/
+
+Step 2: Add AppDbContext.cs to /Server/Data/
+
+using Microsoft.EntityFrameworkCore;
+using SEESA_ASSESSMENT.Server.Models;
+
+namespace SEESA_ASSESSMENT.Server.Data
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Taskist> Taskists { get; set; }
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
+        public DbSet<Product> Products { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Optional: You can configure additional settings here.
+            base.OnModelCreating(modelBuilder);
+        }
+    }
+}
+
+
+Step 3: Configure Database Connection in Program.cs (Server)
+Open /Server/Program.cs and add EF Core services like this:
+
+    At the top:
+
+using Microsoft.EntityFrameworkCore;
+using SEESA_ASSESSMENT.Server.Data;
+
+    In builder.Services section:
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+Step 4: Add Connection String in appsettings.json (Server)
+In /Server/appsettings.json, add:
+
+"ConnectionStrings": {
+  "DefaultConnection": "Server=localhost;Database=SEESA_ASSESSMENT;Trusted_Connection=True;TrustServerCertificate=True;"
+}
+
+Adjust Server=localhost if you’re using a named instance (e.g., Server=.\SQLEXPRESS)
