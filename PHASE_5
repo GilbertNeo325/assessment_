@@ -1,0 +1,116 @@
+ PHASE 4: Create API Controllers for All Tables
+🔧 Prerequisite
+Make sure:
+
+              Your AppDbContext is working (✅ Done in Phase 2)
+              
+              Database is up-to-date (✅ Done in Phase 3)
+              
+              Your models are in /Server/Models/
+
+📁 Folder Setup (if not already present)
+
+        Inside the Server project:
+        
+                /Controllers/
+        Create this folder if it doesn’t exist.
+
+🧠 We will now generate 7 controllers:
+Model	Endpoint URL
+        User	/api/users
+        Employee	/api/employees
+        Transaction	/api/transactions
+        Department	/api/departments
+        Taskist	/api/taskists
+        LeaveRequest	/api/leaverequests
+        Product	/api/products
+
+🧱 Example: UsersController.cs
+Create this file in /Server/Controllers/UsersController.cs:
+
+                using Microsoft.AspNetCore.Mvc;
+                using Microsoft.EntityFrameworkCore;
+                using SEESA_ASSESSMENT.Server.Data;
+                using SEESA_ASSESSMENT.Server.Models;
+                
+                namespace SEESA_ASSESSMENT.Server.Controllers
+                {
+                    [Route("api/[controller]")]
+                    [ApiController]
+                    public class UsersController : ControllerBase
+                    {
+                        private readonly AppDbContext _context;
+                
+                        public UsersController(AppDbContext context)
+                        {
+                            _context = context;
+                        }
+                
+                        [HttpGet]
+                        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+                        {
+                            return await _context.Users.ToListAsync();
+                        }
+                
+                        [HttpGet("{id}")]
+                        public async Task<ActionResult<User>> GetUser(int id)
+                        {
+                            var user = await _context.Users.FindAsync(id);
+                            if (user == null)
+                                return NotFound();
+                            return user;
+                        }
+                
+                        [HttpPost]
+                        public async Task<ActionResult<User>> PostUser(User user)
+                        {
+                            _context.Users.Add(user);
+                            await _context.SaveChangesAsync();
+                            return CreatedAtAction(nameof(GetUser), new { id = user.UserID }, user);
+                        }
+                
+                        [HttpPut("{id}")]
+                        public async Task<IActionResult> PutUser(int id, User user)
+                        {
+                            if (id != user.UserID)
+                                return BadRequest();
+                
+                            _context.Entry(user).State = EntityState.Modified;
+                            await _context.SaveChangesAsync();
+                            return NoContent();
+                        }
+                
+                        [HttpDelete("{id}")]
+                        public async Task<IActionResult> DeleteUser(int id)
+                        {
+                            var user = await _context.Users.FindAsync(id);
+                            if (user == null)
+                                return NotFound();
+                
+                            _context.Users.Remove(user);
+                            await _context.SaveChangesAsync();
+                            return NoContent();
+                        }
+                    }
+                }
+
+
+🔁 Repeat Similar for These Controllers:
+You’ll repeat the structure above for:
+
+        EmployeesController.cs
+        TransactionsController.cs
+        DepartmentsController.cs
+        TaskistsController.cs
+        LeaveRequestsController.cs
+        ProductsController.cs
+Just replace the model name (User) and table reference (_context.Users) accordingly.
+
+⚙️ Register Endpoints in Program.cs (already happens with MapControllers())
+In /Server/Program.cs, make sure you have:
+
+        builder.Services.AddControllers();
+        app.MapControllers();
+
+✅ This is usually already there in new hosted Blazor projects.
+
