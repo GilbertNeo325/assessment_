@@ -1,0 +1,57 @@
+1. Shared/MainLayout.razor
+
+                    @inherits LayoutComponentBase
+                    
+                    <PageTitle>SEESA Assessment</PageTitle>
+                    
+                    <div class="d-flex">
+                        <nav class="flex-column nav-pills bg-light vh-100 p-3" style="width:220px;">
+                            <h4>SEESA Navigation</h4>
+                            <NavLink class="nav-link mb-2" href="" Match="NavLinkMatch.All">Home</NavLink>
+                            <NavLink class="nav-link mb-2" href="users">Users</NavLink>
+                            <NavLink class="nav-link mb-2" href="employees">Employees</NavLink>
+                            <NavLink class="nav-link mb-2" href="departments">Departments</NavLink>
+                            <NavLink class="nav-link mb-2" href="products">Products</NavLink>
+                            <NavLink class="nav-link mb-2" href="leaverequests">Leave Requests</NavLink>
+                            <NavLink class="nav-link mb-2" href="transactions">Transactions</NavLink>
+                            <NavLink class="nav-link mb-2" href="taskists">Tasks</NavLink>
+                        </nav>
+                    
+                        <main class="flex-fill p-4">
+                            @Body
+                        </main>
+                    </div>
+
+
+2. App.razor
+Make sure your App.razor is set like this:
+
+          <Router AppAssembly="@typeof(Program).Assembly">
+              <Found Context="routeData">
+                  <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+                  <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+              </Found>
+              <NotFound>
+                  <LayoutView Layout="@typeof(MainLayout)">
+                      <p>Sorry, there's nothing at this address.</p>
+                  </LayoutView>
+              </NotFound>
+          </Router>
+
+
+3. Folder & File Structure for Navigation
+                Shared/MainLayout.razor — layout with navigation sidebar
+                
+                Pages/Users.razor — your Users list page (route: /users)
+                
+                Pages/Employees.razor — Employees list page (/employees)
+                
+                Pages/Departments.razor — Departments list page (/departments)
+                
+                Pages/Products.razor — Products list page (/products)
+                
+                Pages/LeaveRequests.razor — Leave Requests list page (/leaverequests)
+                
+                Pages/Transactions.razor — Transactions list page (/transactions)
+
+                Pages/Taskists.razor — Tasks list page (/taskists)
