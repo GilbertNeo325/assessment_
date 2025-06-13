@@ -1,0 +1,185 @@
+// PHASE 5: WORKING IMPLEMENTATION
+
+
+
+// ------------------------
+// 1. IUserService.cs
+// ------------------------
+using SEESA_ASSESSMENT.Shared.Models;
+
+public interface IUserService
+{
+    Task<List<User>> GetUsers();
+    Task<User?> GetUserById(int id);
+    Task CreateUser(User user);
+    Task UpdateUser(User user);
+    Task DeleteUser(int id);
+}
+
+
+
+// ------------------------
+// 2. UserService.cs
+// ------------------------
+using System.Net.Http.Json;
+using SEESA_ASSESSMENT.Shared.Models;
+
+public class UserService : IUserService
+{
+    private readonly HttpClient _http;
+
+    public UserService(HttpClient http)
+    {
+        _http = http;
+    }
+
+    public async Task<List<User>> GetUsers() =>
+        await _http.GetFromJsonAsync<List<User>>("api/users") ?? new();
+
+    public async Task<User?> GetUserById(int id) =>
+        await _http.GetFromJsonAsync<User>($"api/users/{id}");
+
+    public async Task CreateUser(User user) =>
+        await _http.PostAsJsonAsync("api/users", user);
+
+    public async Task UpdateUser(User user) =>
+        await _http.PutAsJsonAsync($"api/users/{user.UserID}", user);
+
+    public async Task DeleteUser(int id) =>
+        await _http.DeleteAsync($"api/users/{id}");
+}
+
+
+
+
+// ------------------------
+// 3. Program.cs (Client)
+// ------------------------
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using SEESA_ASSESSMENT.Client;
+using SEESA_ASSESSMENT.Client.Services;
+
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
+
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/") });
+builder.Services.AddScoped<IUserService, UserService>();
+
+await builder.Build().RunAsync();
+
+
+
+// ------------------------
+// 4. UserList.razor
+// ------------------------
+@page "/users"
+@inject IUserService userService
+
+<h3>Users</h3>
+<a class="btn btn-primary" href="/users/add">Add New User</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.FirstName @user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.CreatedAt.ToShortDateString()</td>
+                <td>
+                    <a href="/users/edit/@user.UserID" class="btn btn-sm btn-warning">Edit</a>
+                    <button class="btn btn-sm btn-danger" @onclick="() => DeleteUser(user.UserID)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<User> users = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await userService.GetUsers();
+    }
+
+    private async Task DeleteUser(int id)
+    {
+        await userService.DeleteUser(id);
+        users = await userService.GetUsers();
+    }
+}
+
+
+
+
+// ------------------------
+// 5. AddUser.razor
+// ------------------------
+@page "/users/add"
+@inject IUserService userService
+@inject NavigationManager navManager
+
+<h3>Add New User</h3>
+
+<EditForm Model="user" OnValidSubmit="HandleValidSubmit">
+    <InputText @bind-Value="user.FirstName" class="form-control" placeholder="First Name" />
+    <InputText @bind-Value="user.LastName" class="form-control" placeholder="Last Name" />
+    <InputText @bind-Value="user.Email" class="form-control" placeholder="Email" />
+    <button type="submit" class="btn btn-success mt-2">Save</button>
+</EditForm>
+
+@code {
+    private User user = new();
+
+    private async Task HandleValidSubmit()
+    {
+        await userService.CreateUser(user);
+        navManager.NavigateTo("/users");
+    }
+}
+
+
+
+
+// ------------------------
+// 6. EditUser.razor
+// ------------------------
+@page "/users/edit/{id:int}"
+@inject IUserService userService
+@inject NavigationManager navManager
+
+<EditForm Model="user" OnValidSubmit="HandleValidSubmit">
+    <InputText @bind-Value="user.FirstName" class="form-control" placeholder="First Name" />
+    <InputText @bind-Value="user.LastName" class="form-control" placeholder="Last Name" />
+    <InputText @bind-Value="user.Email" class="form-control" placeholder="Email" />
+    <button type="submit" class="btn btn-success mt-2">Update</button>
+</EditForm>
+
+@code {
+    [Parameter] public int id { get; set; }
+    private User user = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await userService.GetUserById(id);
+        if (result != null)
+            user = result;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await userService.UpdateUser(user);
+        navManager.NavigateTo("/users");
+    }
+}
