@@ -1,0 +1,59 @@
+@using Microsoft.AspNetCore.Components.Routing
+
+<NavMenu>
+    <div class="sidebar bg-light p-3">
+        <nav class="nav flex-column">
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+
+            <NavLink class="nav-link" href="/users">
+                <span class="oi oi-people" aria-hidden="true"></span> Users
+            </NavLink>
+
+            <NavLink class="nav-link" href="/employees">
+                <span class="oi oi-briefcase" aria-hidden="true"></span> Employees
+            </NavLink>
+
+            <NavLink class="nav-link" href="/departments">
+                <span class="oi oi-building" aria-hidden="true"></span> Departments
+            </NavLink>
+
+            <NavLink class="nav-link" href="/products">
+                <span class="oi oi-box" aria-hidden="true"></span> Products
+            </NavLink>
+
+            <NavLink class="nav-link" href="/leaverequests">
+                <span class="oi oi-calendar" aria-hidden="true"></span> Leave Requests
+            </NavLink>
+
+            <NavLink class="nav-link" href="/transactions">
+                <span class="oi oi-dollar" aria-hidden="true"></span> Transactions
+            </NavLink>
+
+            <NavLink class="nav-link" href="/taskists">
+                <span class="oi oi-task" aria-hidden="true"></span> Task Lists
+            </NavLink>
+        </nav>
+    </div>
+</NavMenu>
+
+<style>
+    .sidebar {
+        width: 220px;
+        height: 100vh;
+        position: fixed;
+        overflow-y: auto;
+    }
+
+    .nav-link {
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .nav-link.active {
+        background-color: #007bff;
+        color: white !important;
+    }
+</style>
