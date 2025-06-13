@@ -1,0 +1,80 @@
+User.cs
+
+public class User
+{
+    public int UserID { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+}
+
+
+Employee.cs
+
+public class Employee
+{
+    public int EmployeeID { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public DateTime? HireDate { get; set; }
+    public string? Status { get; set; }
+}
+
+
+Transaction.cs
+
+public class Transaction
+{
+    public int TransactionID { get; set; }
+    public string Type { get; set; } = string.Empty;
+    public decimal Amount { get; set; }
+    public DateTime TransDate { get; set; } = DateTime.Now;
+    public string? Description { get; set; }
+}
+
+Department.cs
+
+public class Department
+{
+    public int DepartmentID { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+}
+
+Taskist.cs
+
+public class Taskist
+{
+    public int TaskID { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public DateTime? DueDate { get; set; }
+    public bool IsCompleted { get; set; } = false;
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+}
+
+
+LeaveRequest.cs
+
+public class LeaveRequest
+{
+    public int LeaveRequestID { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public string? Reason { get; set; }
+    public string? Status { get; set; }
+}
+
+
+Product.cs
+
+public class Product
+{
+    public int ProductID { get; set; }
+    public string ProductName { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public decimal Price { get; set; }
+    public int QuantityStock { get; set; }
+}
