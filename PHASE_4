@@ -1,0 +1,29 @@
+ PHASE 3: Migrations & Applying to SQL Server
+          🧠 You should run all commands in the Server project folder (where AppDbContext is)
+
+🔧 Step 1: Install EF Core Tools (if not already installed)
+If you’re using Visual Studio Code + CLI, run this in the terminal:
+
+        dotnet tool install --global dotnet-ef
+
+📥 Step 2: Install EF Core NuGet Packages in the Server Project
+Run the following commands in your Server project folder:
+
+        dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+        dotnet add package Microsoft.EntityFrameworkCore.Tools
+
+
+🛠️ Step 3: Add Initial Migration
+From inside your Server folder, run:
+
+        dotnet ef migrations add InitialCreate
+
+✅ You should see output showing that migration files were created in a new Migrations folder.
+
+📤 Step 4: Apply Migration to Your SQL Server DB
+Still inside the Server folder, run:
+
+      dotnet ef database update
+
+🎉 This creates the tables in the SEESA_ASSESSMENT database in SQL Server (SSMS).
+
