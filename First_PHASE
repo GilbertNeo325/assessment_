@@ -1,0 +1,66 @@
+LeaveManagementSystem/
+├── Client/                         # Blazor WebAssembly front-end
+│   ├── Pages/
+│   │   ├── Users/
+│   │   │   ├── UserList.razor
+│   │   │   └── UserForm.razor
+│   │   ├── Employees/
+│   │   │   ├── EmployeeList.razor
+│   │   │   └── EmployeeForm.razor
+│   │   ├── Departments/
+│   │   │   ├── DepartmentList.razor
+│   │   │   └── DepartmentForm.razor
+│   │   ├── Tasks/
+│   │   │   ├── TaskList.razor
+│   │   │   └── TaskForm.razor
+│   │   ├── LeaveRequests/
+│   │   │   ├── LeaveList.razor
+│   │   │   └── LeaveForm.razor
+│   │   ├── Transactions/
+│   │   │   ├── TransactionList.razor
+│   │   │   └── TransactionForm.razor
+│   │   ├── Products/
+│   │   │   ├── ProductList.razor
+│   │   │   └── ProductForm.razor
+│   ├── Services/                   # API communication services
+│   │   ├── UserService.cs
+│   │   ├── EmployeeService.cs
+│   │   ├── DepartmentService.cs
+│   │   ├── TaskService.cs
+│   │   ├── LeaveRequestService.cs
+│   │   ├── TransactionService.cs
+│   │   └── ProductService.cs
+│   ├── Shared/
+│   │   └── NavMenu.razor
+│   ├── wwwroot/
+│   │   └── css/site.css
+│   ├── App.razor
+│   └── Program.cs
+
+├── Server/                         # ASP.NET Core back-end API
+│   ├── Controllers/
+│   │   ├── UsersController.cs
+│   │   ├── EmployeesController.cs
+│   │   ├── DepartmentsController.cs
+│   │   ├── TasksController.cs
+│   │   ├── LeaveRequestsController.cs
+│   │   ├── TransactionsController.cs
+│   │   └── ProductsController.cs
+│   ├── Data/
+│   │   ├── AppDbContext.cs
+│   │   └── DbInitializer.cs (optional seed data)
+│   ├── Migrations/                 # EF Core migrations
+│   ├── appsettings.json
+│   └── Program.cs
+
+├── Shared/                         # Shared data models
+│   └── Models/
+│       ├── User.cs
+│       ├── Employee.cs
+│       ├── Department.cs
+│       ├── TaskItem.cs
+│       ├── LeaveRequest.cs
+│       ├── Transaction.cs
+│       └── Product.cs
+
+└── LeaveManagementSystem.sln
